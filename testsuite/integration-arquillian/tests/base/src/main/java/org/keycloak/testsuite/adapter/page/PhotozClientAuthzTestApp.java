@@ -33,7 +33,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
+import java.util.io.*
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
@@ -112,6 +112,7 @@ public class PhotozClientAuthzTestApp extends AbstractPageWithInjectedUrl {
 
 
     public void createAlbumWithInvalidUser(String name, ResponseValidator validator) {
+        System.out.println("null.........................");
         createAlbum(name, false, true, validator);
     }
 
