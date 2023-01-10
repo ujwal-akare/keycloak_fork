@@ -18,7 +18,7 @@ package org.keycloak.testsuite.authz.adapter.example;
 
 import java.io.File;
 import java.io.IOException;
-
+import java.util.io.*
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.keycloak.testsuite.adapter.page.PhotozClientAuthzTestApp;
@@ -37,11 +37,13 @@ public class PhotozAccountResourcesAdapterTest extends AbstractPhotozAccountReso
 
     @Deployment(name = PhotozClientAuthzTestApp.DEPLOYMENT_NAME)
     public static WebArchive deploymentClient() throws IOException {
+        System.out.println("PhotozClientAuthzTestApp Deployment.........");
         return exampleDeployment(PhotozClientAuthzTestApp.DEPLOYMENT_NAME);
     }
 
     @Deployment(name = RESOURCE_SERVER_ID, managed = false, testable = false)
     public static WebArchive deploymentResourceServer() throws IOException {
+        System.out.println(" PhotozClientAuthzTestApp deploymentResourceServer.......);
         return exampleDeployment(RESOURCE_SERVER_ID,
               webArchive -> webArchive.addAsWebInfResource(new File(TEST_APPS_HOME_DIR + "/photoz/keycloak-lazy-load-path-authz-service.json"), "keycloak.json"));
     }
