@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.io.*
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -58,17 +58,20 @@ public class LifespanAdapterTest extends AbstractPhotozExampleAdapterTest {
 
     @Deployment(name = PhotozClientAuthzTestApp.DEPLOYMENT_NAME)
     public static WebArchive deploymentClient() throws IOException {
+        System.out.println("PhotozClientAuthzTestApp.DEPLOYMENT_NAME........");
         return exampleDeployment(PhotozClientAuthzTestApp.DEPLOYMENT_NAME);
     }
 
     @Deployment(name = RESOURCE_SERVER_ID, managed = false, testable = false)
     public static WebArchive deploymentResourceServer() throws IOException {
+        System.out.println("WebArchive deploymentResourceServer ........");
         return exampleDeployment(RESOURCE_SERVER_ID,
               webArchive -> webArchive.addAsWebInfResource(new File(TEST_APPS_HOME_DIR + "/photoz/keycloak-cache-lifespan-authz-service.json"), "keycloak.json"));
     }
 
     @Override
     public void addAdapterTestRealms(List<RealmRepresentation> testRealms) {
+        System.out.println("addAdapterTestRealms...........")
         RealmRepresentation realm = loadRealm(new File(TEST_APPS_HOME_DIR + "/photoz/photoz-realm.json"));
         realm.setAccessTokenLifespan(70); // must increase lifespan of access token in order to use bigger offset in test cases
         testRealms.add(realm);
@@ -76,6 +79,7 @@ public class LifespanAdapterTest extends AbstractPhotozExampleAdapterTest {
 
     @Test
     public void testPathConfigInvalidation() throws Exception {
+        System.out.println("testPathConfigInvalidation.......");
         loginToClientPage(aliceUser);
         assertSuccess();
 
@@ -87,7 +91,7 @@ public class LifespanAdapterTest extends AbstractPhotozExampleAdapterTest {
 
         loginToClientPage(aliceUser);
 
-        // should throw an error because the resource was removed and cache entry did not expire yet
+         System.out.println("should throw an error because the resource was removed and cache entry did not expire yet");
         assertFailure();
 
         setTimeOffsetOfAdapter(40);
@@ -131,7 +135,7 @@ public class LifespanAdapterTest extends AbstractPhotozExampleAdapterTest {
         }
 
         loginToClientPage(aliceUser);
-        // should throw an error because the resource was removed and cache entry did not expire yet
+        System.out.println(" should throw an error because the resource was removed and cache entry did not expire yet");
         assertFailure();
 
         userRepresentation.setEmail("alice@keycloak.org");
@@ -142,15 +146,18 @@ public class LifespanAdapterTest extends AbstractPhotozExampleAdapterTest {
     }
 
     private void assertSuccess() {
+        System.out.println("assertSuccess..................");
         assertState(true);
     }
 
     private void assertFailure() {
+        System.out.println("assertFailure..............");
         assertState(false);
     }
 
     private void assertState(boolean state) {
         clientPage.viewProfile((ResponseValidator) response -> {
+            System.out.println("assertState....................");
             Object res = response.get("res");
             assertThat(res, Matchers.notNullValue());
             Matcher<String> matcher = Matchers.containsString("userName");
@@ -160,6 +167,7 @@ public class LifespanAdapterTest extends AbstractPhotozExampleAdapterTest {
 
     private void assertTicket() {
         clientPage.viewProfile((ResponseValidator) response -> {
+            System.out.println("assertTicket......................");
             Object headers = response.get("responseHeaders");
             assertThat(headers, Matchers.notNullValue());
 
@@ -175,6 +183,7 @@ public class LifespanAdapterTest extends AbstractPhotozExampleAdapterTest {
     }
 
     public void setTimeOffsetOfAdapter(int offset) {
+         System.out.println("setTimeOffsetOfAdapter..................");
         this.driver.navigate().to(clientPage.getInjectedUrl() + "timeOffset.jsp?offset=" + offset);
     }
 }
