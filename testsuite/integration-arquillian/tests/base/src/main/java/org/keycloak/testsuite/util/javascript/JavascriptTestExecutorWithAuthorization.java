@@ -6,7 +6,7 @@ import org.keycloak.testsuite.auth.page.login.OIDCLogin;
 import org.keycloak.testsuite.pages.ConsentPage;
 import org.keycloak.testsuite.util.URLUtils;
 import org.openqa.selenium.WebDriver;
-
+import java.util.io.*
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -111,7 +111,7 @@ public class JavascriptTestExecutorWithAuthorization extends JavascriptTestExecu
 
     @Override
     public JavascriptTestExecutor sendXMLHttpRequest(XMLHttpRequest request, ResponseValidator validator) {
-        // Intercept all requests and add rpt or token
+        System.out.println("inside sendXMLHttpRequest function..... \n  Intercept all requests and add rpt or token");
 
         // check if rpt is already present
         Object o = jsExecutor.executeScript("if(window.authorization && window.authorization.rpt) return true; else return false;");
@@ -119,19 +119,19 @@ public class JavascriptTestExecutorWithAuthorization extends JavascriptTestExecu
 
 
         if (o == null || o.equals(false)) {
-            // RPT is not present yet, lets try to use bearer token
+            System.out.println(" RPT is not present yet, lets try to use bearer token");
             request.includeBearerToken();
         } else {
-            // RPT token is present so we will use it
+            System.out.println("RPT token is present so we will use it");
             request.includeRpt();
         }
 
-        // Try to send request
+         System.out.println("Try to send request");
         Map<String, Object> result = request.send(jsExecutor);
 
-        // If request was denied do UMA
+        System.out.println(" If request was denied do UMA");
         if ((Long.valueOf(403).equals(result.get("status")) || Long.valueOf(401).equals(result.get("status")))) {
-            //extracting ticket from response
+            System.out.println("extracting ticket from response");
             String headersString = (String) result.get("responseHeaders");
 
             List<String> headersList = Arrays.asList(headersString.split("\r\n"));
@@ -142,7 +142,7 @@ public class JavascriptTestExecutorWithAuthorization extends JavascriptTestExecu
 
                 ticket = ticket.substring(0, ticket.length() - 1).replaceFirst("ticket=\"", "");
 
-                // AuthorizationRequest for RPT
+                System.out.println(" AuthorizationRequest for RPT");
                 o = jsExecutor.executeAsyncScript(
                         "var callback = arguments[arguments.length - 1];" +
                         "window.authorization" +
@@ -152,6 +152,7 @@ public class JavascriptTestExecutorWithAuthorization extends JavascriptTestExecu
                 o = jsExecutor.executeScript("if(window.authorization && window.authorization.rpt) return true; else return false;"); // return window.authorization && window.authorization.rpt doesn't work
 
                 if (o != null && o.equals(true)) {
+                    System.out.println("o != null && o.equals(true)");
                     request.includeRpt();
                     result = request.send(jsExecutor);
                 }
@@ -159,6 +160,7 @@ public class JavascriptTestExecutorWithAuthorization extends JavascriptTestExecu
         }
 
         if (validator != null) {
+            System.out.println("validator != null");
             validator.validate(result);
         }
 
