@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.io.*
+import java.util.io.*;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -71,7 +71,7 @@ public class LifespanAdapterTest extends AbstractPhotozExampleAdapterTest {
 
     @Override
     public void addAdapterTestRealms(List<RealmRepresentation> testRealms) {
-        System.out.println("addAdapterTestRealms...........")
+        System.out.println("addAdapterTestRealms...........");
         RealmRepresentation realm = loadRealm(new File(TEST_APPS_HOME_DIR + "/photoz/photoz-realm.json"));
         realm.setAccessTokenLifespan(70); // must increase lifespan of access token in order to use bigger offset in test cases
         testRealms.add(realm);
