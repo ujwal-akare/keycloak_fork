@@ -18,7 +18,7 @@ package org.keycloak.testsuite.authz.adapter.example;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.io.*
+import java.util.io.*;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.keycloak.testsuite.adapter.page.PhotozClientAuthzTestApp;
