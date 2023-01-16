@@ -44,7 +44,7 @@ public class PhotozAccountResourcesAdapterTest extends AbstractPhotozAccountReso
 
     @Deployment(name = RESOURCE_SERVER_ID, managed = false, testable = false)
     public static WebArchive deploymentResourceServer() throws IOException {
-        System.out.println(" PhotozClientAuthzTestApp deploymentResourceServer.......);
+        System.out.println(" PhotozClientAuthzTestApp deploymentResourceServer.......");
         return exampleDeployment(RESOURCE_SERVER_ID,
               webArchive -> webArchive.addAsWebInfResource(new File(TEST_APPS_HOME_DIR + "/photoz/keycloak-lazy-load-path-authz-service.json"), "keycloak.json"));
     }
